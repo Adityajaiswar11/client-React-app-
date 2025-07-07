@@ -18,9 +18,10 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
+
+   const fetchData = async () => {
       try {
+         setLoading(true);
         const [userRes,AiRandomImgRes] = await Promise.all([
          getLatestuser(),
           axios.get("https://dog.ceo/api/breeds/image/random"),
@@ -30,10 +31,13 @@ const UserProfile = () => {
         setLoading(false);
       } catch (error) {
         console.error("Error fetching user or image:", error);
-        setLoading(false);
+       
+      }finally{
+         setLoading(false);
       }
     };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -51,6 +55,7 @@ const UserProfile = () => {
       <div className="bg-white shadow-xl rounded-xl p-6 w-full max-w-md text-center">
         <img
           src={dogImage}
+          loading="lazy"
           alt="Random Dog"
           className="w-32 h-32 rounded-full mx-auto object-cover border-2 border-blue-400"
         />
